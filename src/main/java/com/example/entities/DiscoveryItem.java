@@ -1,10 +1,11 @@
 package com.example.entities;
 
+import java.time.LocalTime;
 import java.util.Date;
 
 public class DiscoveryItem {
     private Date date;
-    private Date time;
+    private LocalTime time;
     private Integer dayOfYear;
     private Double dayOfYearFraction;
     private Double aod1640nm;
@@ -128,11 +129,11 @@ public class DiscoveryItem {
         this.date = date;
     }
 
-    public Date getTime() {
+    public LocalTime getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(LocalTime time) {
         this.time = time;
     }
 
