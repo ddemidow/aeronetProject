@@ -36,4 +36,8 @@ public class EntityField <T>{
     public void setDataIndex(Integer dataIndex) {
         this.dataIndex = dataIndex;
     }
+
+    public static void main(String[] args) {
+        //Entity
+    }
 }

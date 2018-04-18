@@ -2,8 +2,15 @@ package com.example.entities;
 
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.Map;
+import java.util.HashMap;
 
 public class DiscoveryItem {
+    private Map<Integer, EntityField<Object>> test = new HashMap<Integer, EntityField<Object>>();
+    {
+       //test.put()
+    }
+
     private Date date;
     private LocalTime time;
     private Integer dayOfYear;
