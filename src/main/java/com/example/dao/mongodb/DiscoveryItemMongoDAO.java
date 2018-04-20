@@ -3,6 +3,7 @@ package com.example.dao.mongodb;
 import com.example.dao.DiscoveryItemDAO;
 import com.example.entities.DiscoveryItem;
 import com.example.entities.Location;
+import com.mongodb.DBObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,6 +27,10 @@ public class DiscoveryItemMongoDAO implements DiscoveryItemDAO {
 
     @Override
     public Boolean insertItems(ArrayList<DiscoveryItem> newItems, Location parentLocation) {
+        return null;
+    }
+
+    public DBObject toDbObject(DiscoveryItem item) {
         return null;
     }
 }
