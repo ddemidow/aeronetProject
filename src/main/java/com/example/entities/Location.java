@@ -37,4 +37,14 @@ public class Location {
     public void setElevation(Double elevation) {
         this.elevation = elevation;
     }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "name='" + name + '\'' +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", elevation=" + elevation +
+                '}';
+    }
 }
