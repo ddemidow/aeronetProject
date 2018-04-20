@@ -8,7 +8,7 @@ import com.mongodb.DBObject;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class DiscoveryItemMongoDAO implements DiscoveryItemDAO, MongoExecutable {
+public class DiscoveryItemMongoDAO implements DiscoveryItemDAO {
 
     @Override
     public ArrayList<DiscoveryItem> getAllItemsFromLocation() {
@@ -30,8 +30,7 @@ public class DiscoveryItemMongoDAO implements DiscoveryItemDAO, MongoExecutable 
         return null;
     }
 
-    @Override
-    public DBObject toDbObject(Object obj) {
+    public DBObject toDbObject(DiscoveryItem item) {
         return null;
     }
 }
