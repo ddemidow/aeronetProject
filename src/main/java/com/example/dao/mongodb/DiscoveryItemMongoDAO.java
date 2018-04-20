@@ -3,6 +3,7 @@ package com.example.dao.mongodb;
 import com.example.dao.DiscoveryItemDAO;
 import com.example.entities.DiscoveryItem;
 import com.example.entities.Location;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
 import java.util.ArrayList;
@@ -31,6 +32,16 @@ public class DiscoveryItemMongoDAO implements DiscoveryItemDAO {
     }
 
     public DBObject toDbObject(DiscoveryItem item) {
+        BasicDBObject dbDiscoveryItem = new BasicDBObject();
+
+        for (String currentFieldName : item.getFieldToValue().keySet()) {
+            dbDiscoveryItem.append(currentFieldName, item.getFieldToValue().get(currentFieldName));
+        }
+
+        return dbDiscoveryItem;
+    }
+
+    public DiscoveryItem toJavaObject(DBObject dbDiscoveryItem) {
         return null;
     }
 }
