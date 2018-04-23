@@ -3,12 +3,13 @@ package com.example.dao;
 import com.example.entities.DiscoveryItem;
 import com.example.entities.Location;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
 public interface DiscoveryItemDAO {
-    public ArrayList<DiscoveryItem> getAllItemsFromLocation();
-    public ArrayList<DiscoveryItem> getAllItemsBetween(Date strartFrom, Date endWith);
-    public Boolean insertItem(DiscoveryItem newItem, Location parentLocation);
-    public Boolean insertItems(ArrayList<DiscoveryItem> newItems, Location parentLocation);
+    public ArrayList<DiscoveryItem> getAllItemsFromLocation(String locationName);
+    public ArrayList<DiscoveryItem> getAllItemsBetween(LocalDate strartFrom, LocalDate endWith, String locationName);
+    public Boolean insertItem(DiscoveryItem newItem, String parentLocation);
+    public Boolean insertItems(ArrayList<DiscoveryItem> newItems, String parentLocation);
 }
