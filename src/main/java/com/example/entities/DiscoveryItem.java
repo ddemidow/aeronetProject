@@ -13,6 +13,14 @@ public class DiscoveryItem {
         return fieldToValue;
     }
 
+    public void setValueToField(String fieldName, Object value) {
+        fieldToValue.put(fieldName, value);
+    }
+
+    public Object getValueFromField(String fieldName) {
+        return fieldToValue.get(fieldName);
+    }
+
     public void setFieldToValue(Map<String, Object> fieldToValue) {
         this.fieldToValue = fieldToValue;
     }
