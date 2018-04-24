@@ -14,7 +14,11 @@ public class DiscoveryItem {
     }
 
     public void setValueToField(String fieldName, Object value) {
-        fieldToValue.put(fieldName, value);
+        try {
+            fieldToValue.put(fieldName, new Double(Double.parseDouble(value.toString())));
+        } catch (NumberFormatException ex) {
+            fieldToValue.put(fieldName, value);
+        }
     }
 
     public Object getValueFromField(String fieldName) {
@@ -27,6 +31,17 @@ public class DiscoveryItem {
 
     public LocalDate getDate() {
         return (LocalDate)fieldToValue.get("date");
+    }
+
+    @Override
+    public String toString() {
+        String result = null;
+
+        for (String currentStringName : fieldToValue.keySet()) {
+            result += currentStringName + " = " + getValueFromField(currentStringName) + ",\n";
+        }
+
+        return result;
     }
 
     public void setDate(Date date) {
