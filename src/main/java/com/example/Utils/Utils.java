@@ -46,7 +46,7 @@ public class Utils {
         }
 
 
-        System.out.println(averageDiscoveryItem);
+        //System.out.println(averageDiscoveryItem);
 
         return averageDiscoveryItem;
     }

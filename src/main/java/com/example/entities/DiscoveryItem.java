@@ -35,7 +35,7 @@ public class DiscoveryItem {
 
     @Override
     public String toString() {
-        String result = null;
+        String result = "";
 
         for (String currentStringName : fieldToValue.keySet()) {
             result += currentStringName + " = " + getValueFromField(currentStringName) + ",\n";

@@ -4,6 +4,7 @@ import com.example.Utils.Utils;
 import com.example.callout.utils.AeronetRequestBuilder;
 import com.example.dao.DiscoveryItemDAO;
 import com.example.dao.mongodb.DiscoveryItemMongoDAO;
+import com.example.dao.mongodb.LocationMongoDAO;
 import com.example.entities.DiscoveryItem;
 import com.example.entities.Location;
 
@@ -107,15 +108,20 @@ public class AeronetDataLoader {
     }
 
     public static void main(String[] args) {
-        AeronetRequestBuilder builder = new AeronetRequestBuilder();
+       /* AeronetRequestBuilder builder = new AeronetRequestBuilder();
         String request = builder.setStartDate(LocalDateTime.now().minusYears(18)).setEndDate(LocalDateTime.now().minusYears(16)).setAVG(20).setSite("Cart_Site").setIfNoHtml(true).setAod(1).buildDiscoveryItemRequest();
         System.out.println(request);
 
         //https://aeronet.gsfc.nasa.gov/cgi-bin/print_web_data_v3?&if_no_html=1&month2=APRIL&AVG=12&site=Cart_Site&hour2=16&month=APRIL&hour=16&year=2000&day2=20&day=20&year2=2001
        ArrayList<DiscoveryItem> items = new AeronetDataLoader().getDiscoveryItems(request);
 
-       System.out.println(items.size());
+       System.out.println(items.size());*/
 
+       ArrayList<Location> locations = new AeronetDataLoader().getAllLocations(new AeronetRequestBuilder().buildLocationsRequest());
+
+       System.out.println(locations.size());
+
+       new LocationMongoDAO().insertLocations(locations);
       // Double.
         //Utils.getAverageDiscoveryItem(items);
 

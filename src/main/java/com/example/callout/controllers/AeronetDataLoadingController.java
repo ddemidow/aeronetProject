@@ -44,7 +44,9 @@ public class AeronetDataLoadingController {
 		queryItem.setStart(start);
 		queryItem.setEnd(end);
 
-		String url = aeronetRequestBuilder.setSite(location.getName()).setStartDate(start).setEndDate(end).setAVG(1).setAod(20).setIfNoHtml(true).buildDiscoveryItemRequest();
+		String url = aeronetRequestBuilder.setSite(location.getName()).setStartDate(start).setEndDate(end).setAVG(20).setAod(1).setIfNoHtml(true).buildDiscoveryItemRequest();
+
+		System.out.println(url);
 
 		try{
 			System.out.println("start downloading...");
@@ -61,15 +63,19 @@ public class AeronetDataLoadingController {
 
 				if (result) {
 					queryItem.setStatus(Utils.MigrationStatus.Completed);
-					queryItem.setDuration((int)Duration.between(LocalDate.now(), queryItem.getStartExecution()).getSeconds());
+					System.out.println("here");
+
+					queryItem.setDuration(Duration.between(queryItem.getStartExecution(), LocalDateTime.now()).getSeconds());
+
+					System.out.println("here1");
 				}
 			}
 		} catch(Exception ex) {
 			queryItem.setStatus(Utils.MigrationStatus.Declined);
-			queryItem.setMessage(ex.getMessage());
+			queryItem.setMessage(ex.getMessage() + ex.getCause() + ex.getLocalizedMessage());
 		}
 
-		return null;
+		return queryItem;
 	}
 
 	public class MigrationQueryItem {
@@ -77,7 +83,7 @@ public class AeronetDataLoadingController {
 	    private LocalDateTime start;
 	    private LocalDateTime end;
 		private LocalDateTime startExecution;
-		private Integer durationSec;
+		private Long durationSec;
         private Utils.MigrationStatus status;
         private String message;
         private Integer size;
@@ -138,11 +144,11 @@ public class AeronetDataLoadingController {
 			this.message = message;
 		}
 
-		public Integer getDuration() {
+		public Long getDuration() {
 			return durationSec;
 		}
 
-		public void setDuration(Integer durationSec) {
+		public void setDuration(Long durationSec) {
 			this.durationSec = durationSec;
 		}
 
@@ -153,7 +159,7 @@ public class AeronetDataLoadingController {
 					", start=" + start +
 					", end=" + end +
 					", startExecution=" + startExecution +
-					", durationSec=" + durationSec +
+					", durationSec=" + durationSec + " sec" +
 					", status=" + status +
 					", message='" + message + '\'' +
 					", size=" + size +
@@ -162,6 +168,13 @@ public class AeronetDataLoadingController {
 	}
 
 	public static void main(String[] args) {
+		LocalDateTime startDate = LocalDateTime.now().minusDays(1);
+		LocalDateTime endDate = LocalDateTime.now();
+
+		long minutes = Duration.between(startDate, endDate).toMinutes();
+
+		//System.out.println(Duration.between(LocalDate.now(), LocalDate.now()).toMinutes());
+
 		LocationMongoDAO locationDao = new LocationMongoDAO();
 
 		Location test = locationDao.getLocationByName("Lille");
@@ -170,8 +183,13 @@ public class AeronetDataLoadingController {
 			AeronetDataLoadingController controller = new AeronetDataLoadingController(Utils.MONGO_DB_NAME);
 
 			MigrationQueryItem item = controller.startProcessDiscoveryData(test, LocalDateTime.now().minusYears(18), LocalDateTime.now().minusYears(18).plusMonths(1));
+
+			System.out.println(item);
 		} catch (DatabaseNotSupportException e) {
 			e.printStackTrace();
 		}
+
+		DiscoveryItemMongoDAO itemDao = new DiscoveryItemMongoDAO();
+		System.out.println(Utils.getAverageDiscoveryItem(itemDao.getAllItemsFromLocation(test.getName())));
 	}
 }

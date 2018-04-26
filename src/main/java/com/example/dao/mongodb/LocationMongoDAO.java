@@ -73,6 +73,7 @@ public class LocationMongoDAO implements LocationDAO {
 
     public static void main(String[] args) {
         LocationMongoDAO dao = new LocationMongoDAO();
+
         /*for (int i = 1; i<10 ; i++) {
             Location newLot = new Location();
             newLot.setName("test" + i);
@@ -85,7 +86,7 @@ public class LocationMongoDAO implements LocationDAO {
         //ArrayList<Location> all = dao.getAllLocations();
 
         //for (Location currentLocation : all) {
-        System.out.println(dao.getLocationByName("test").getName());
+        //System.out.println(dao.getLocationByName("test").getName());
         //}
 
         //MongoClient mongoClient = new MongoClient();
