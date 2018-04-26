@@ -76,6 +76,39 @@ public class DiscoveryItemMongoDAO implements DiscoveryItemDAO {
         }
     }
 
+    @Override
+    public Boolean insertAverageDiscoveryIyem(ArrayList<DiscoveryItem> newAverageItems) {
+        discoveryItemCollection = new MongoClient().getDB("test").getCollection("averageitems");
+
+        ArrayList<DBObject> convertedDiscoveryItems = new ArrayList<>();
+
+        for (DiscoveryItem currentDiscoveryItem : newAverageItems) {
+            convertedDiscoveryItems.add(toDbObject(currentDiscoveryItem));
+        }
+
+        try {
+            discoveryItemCollection.insert(convertedDiscoveryItems);
+
+            return true;
+        } catch(Exception ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public ArrayList<DiscoveryItem> getAllAverageItens() {
+        discoveryItemCollection = new MongoClient().getDB("test").getCollection("averageitems");
+
+        ArrayList<DiscoveryItem> discoveryItems = new ArrayList<DiscoveryItem>();
+        DBCursor cursor = discoveryItemCollection.find();
+
+        while (cursor.hasNext()) {
+            discoveryItems.add(toJavaObject(cursor.next()));
+        }
+
+        return discoveryItems;
+    }
+
     public DBObject toDbObject(DiscoveryItem item) {
         BasicDBObject dbDiscoveryItem = new BasicDBObject();
 

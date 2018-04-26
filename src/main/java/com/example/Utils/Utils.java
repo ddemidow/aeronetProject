@@ -8,7 +8,7 @@ public class Utils {
     public static final String MONGO_DB_NAME = "MongoDB";
 
     public static enum MigrationStatus {
-        Completed, Declined, InProgress
+        Completed, Declined, InProgress_Downloading, InProgress_Inserting
     }
 
     public static void logException(Exception ex) {

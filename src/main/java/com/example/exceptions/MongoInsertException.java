@@ -1,4 +1,4 @@
 package com.example.exceptions;
 
-public class MongoInsertException {
+public class MongoInsertException extends Exception{
 }

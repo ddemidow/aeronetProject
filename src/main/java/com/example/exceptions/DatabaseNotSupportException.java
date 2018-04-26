@@ -1,4 +1,4 @@
 package com.example.exceptions;
 
-public class DatabaseNotSupportException {
+public class DatabaseNotSupportException extends Exception{
 }
