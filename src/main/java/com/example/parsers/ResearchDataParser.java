@@ -1,6 +1,6 @@
 package com.example.parsers;
 
-import com.example.entities.DiscoveryItem;
+/*import com.example.entities.DiscoveryItem;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -19,10 +19,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.Locale;
+import java.util.Locale;*/
 
 public class ResearchDataParser {
-    private static final String AERONET_DATE_FORMAT_PETTERN = "MM:dd:yyyy";
+    /*private static final String AERONET_DATE_FORMAT_PETTERN = "MM:dd:yyyy";
     private static final String AERONET_TIME_FORMAT_PETTERN = "hh:mm:ss";
 
     public ArrayList<DiscoveryItem> parseXmlDataFile(FileInputStream xmlData) {
@@ -79,14 +79,14 @@ public class ResearchDataParser {
     }
 
     public static void main(String[] args) {
-        /*String myDateString = "13:24:40";
+        *//*String myDateString = "13:24:40";
         LocalTime localTime = LocalTime.parse(myDateString, DateTimeFormatter.ofPattern("HH:mm:ss"));
         int hour = localTime.get(ChronoField.CLOCK_HOUR_OF_DAY);
         int minute = localTime.get(ChronoField.MINUTE_OF_HOUR);
         int second = localTime.get(ChronoField.SECOND_OF_MINUTE);
 
         //prints "hour: 13, minute: 24, second: 40":
-        System.out.println(String.format("hour: %d, minute: %d, second: %d", hour, minute, second));*/
+        Sytem.out.println(String.format("hour: %d, minute: %d, second: %d", hour, minute, second));*//*
 
-    }
+    }*/
 }
