@@ -6,6 +6,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 
 public class MigrationQueryItemMongoDAO implements MigrationQueryItemDAO, MongoUsable{
@@ -15,7 +16,11 @@ public class MigrationQueryItemMongoDAO implements MigrationQueryItemDAO, MongoU
     private DBCollection migrationItemCollection;
 
     public MigrationQueryItemMongoDAO() {
-        mongoClient = new MongoClient();
+        try {
+            mongoClient = new MongoClient();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
         migrationItemCollection.getCollection(MIGRATION_ITEM_COLLECTION_NAME);
     }
 

@@ -5,6 +5,7 @@ import com.example.entities.DiscoveryItem;
 import com.example.entities.Location;
 import com.mongodb.*;
 
+import java.net.UnknownHostException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +15,11 @@ public class DiscoveryItemMongoDAO implements DiscoveryItemDAO {
     private MongoClient mongoClient;
 
     public DiscoveryItemMongoDAO() {
-        mongoClient = new MongoClient();
+        try {
+            mongoClient = new MongoClient();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -114,7 +119,7 @@ public class DiscoveryItemMongoDAO implements DiscoveryItemDAO {
 
     @Override
     public ArrayList<DiscoveryItem> getAllAverageItens() {
-        discoveryItemCollection = new MongoClient().getDB("test").getCollection("averageitems");
+        discoveryItemCollection = mongoClient.getDB("test").getCollection("averageitems");
 
         ArrayList<DiscoveryItem> discoveryItems = new ArrayList<DiscoveryItem>();
         DBCursor cursor = discoveryItemCollection.find();
