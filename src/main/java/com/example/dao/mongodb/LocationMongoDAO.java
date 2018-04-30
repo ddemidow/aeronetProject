@@ -4,7 +4,6 @@ import com.example.dao.LocationDAO;
 import com.example.entities.Location;
 import com.mongodb.*;
 
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class LocationMongoDAO implements LocationDAO {
@@ -13,11 +12,7 @@ public class LocationMongoDAO implements LocationDAO {
     private DBCollection locationCollaction;
 
     public LocationMongoDAO() {
-        try {
-            locationCollaction = new MongoClient().getDB("test").getCollection(LOCATION_COLLECTION_NAME);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
+        locationCollaction = null;//new MongoClient().getDB("test").getCollection(LOCATION_COLLECTION_NAME);
     }
 
     @Override

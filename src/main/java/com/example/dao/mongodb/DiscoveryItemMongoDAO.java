@@ -5,21 +5,17 @@ import com.example.entities.DiscoveryItem;
 import com.example.entities.Location;
 import com.mongodb.*;
 
-import java.net.UnknownHostException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.net.UnknownHostException;
 
 public class DiscoveryItemMongoDAO implements DiscoveryItemDAO {
     private DBCollection discoveryItemCollection;
     private MongoClient mongoClient;
 
     public DiscoveryItemMongoDAO() {
-        try {
-            mongoClient = new MongoClient();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
+        mongoClient = null;
     }
 
     @Override
@@ -86,7 +82,7 @@ public class DiscoveryItemMongoDAO implements DiscoveryItemDAO {
                 System.out.println(writeResult.isUpdateOfExisting());
             }
             //WriteResult writeResult = discoveryItemCollection.up(convertedDiscoveryItems);
-
+			
             //System.out.println(writeResult.getN());
            // System.out.println(writeResult.isUpdateOfExisting());
 
