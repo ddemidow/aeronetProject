@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class Utils {
     public static final String MONGO_DB_NAME = "MongoDB";
+    public static final String NO_BASE_NAME = "No base";
 
     public static enum MigrationStatus {
         Completed, Declined, InProgress_Downloading, InProgress_Inserting
