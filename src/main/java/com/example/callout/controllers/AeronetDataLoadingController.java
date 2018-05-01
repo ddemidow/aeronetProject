@@ -30,6 +30,9 @@ public class AeronetDataLoadingController {
 		    discoveryItemDaoService = new DiscoveryItemMongoDAO();
 		    aeronetDataLoader = new AeronetDataLoader();
 		    aeronetRequestBuilder = new AeronetRequestBuilder();
+		} else if (dbName.equals(Utils.NO_BASE_NAME)){
+			aeronetDataLoader = new AeronetDataLoader();
+			aeronetRequestBuilder = new AeronetRequestBuilder();
 		} else {
 			throw new DatabaseNotSupportException();
 		}
@@ -76,6 +79,15 @@ public class AeronetDataLoadingController {
 		}
 
 		return queryItem;
+	}
+
+	public ArrayList<DiscoveryItem> getDiscoveryItems(String site, LocalDateTime start, LocalDateTime end) {
+		Location location = aeronetDataLoader.getLocations(aeronetRequestBuilder.buildLocationsRequest(), site);
+
+		String url = aeronetRequestBuilder.setSite(location.getName()).setStartDate(start).
+				setEndDate(end).setAVG(20).setAod(1).setIfNoHtml(true).buildDiscoveryItemRequest();
+
+		return aeronetDataLoader.getDiscoveryItems(url);
 	}
 
 	public class MigrationQueryItem {

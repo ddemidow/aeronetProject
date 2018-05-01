@@ -39,6 +39,8 @@ public class DiscoveryItemController {
         LocalDateTime start = LocalDateTime.of(Integer.valueOf(year1), Integer.valueOf(month1), Integer.valueOf(day1), 0, 0);
         LocalDateTime end = LocalDateTime.of(Integer.valueOf(year2), Integer.valueOf(month2), Integer.valueOf(day2), 0, 0);
 
-        ArrayList<DiscoveryItem> selectedItems = loadingCo9ntroller.startProcessDiscoveryData(site, start, end);
+        ArrayList<DiscoveryItem> selectedItems = loadingCo9ntroller.getDiscoveryItem(site, start, end);
+
+        return Utils.getAverageDiscoveryItem(selectedItems);
     }
 }

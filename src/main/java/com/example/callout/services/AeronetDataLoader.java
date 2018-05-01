@@ -95,6 +95,35 @@ public class AeronetDataLoader {
         return newLocations;
     }
 
+    public Location getLocations(String request, String name) {
+        URL endpointUrl = null;
+
+        try {
+            endpointUrl = new URL(request);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<Location> locations = new ArrayList<Location>();
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(endpointUrl.openStream(), "UTF-8"))) {
+            reader.readLine();
+            reader.readLine();
+
+            for (String serealizedlocation; (serealizedlocation = reader.readLine()) != null;) {
+                if(deserializeLocation(serealizedlocation).getName().equals(name)) {
+                    return deserializeLocation(serealizedlocation);
+                }
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null; //throw exception
+    }
+
     private Location deserializeLocation(String serializedLocation) {
         Location newLocation = new Location();
 
