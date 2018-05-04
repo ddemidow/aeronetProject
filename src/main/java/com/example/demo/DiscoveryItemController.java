@@ -29,13 +29,13 @@ public class DiscoveryItemController {
     }
 
     @RequestMapping("/greeting")
-    public DiscoveryItem calculateAverage(@RequestParam(value="site", defaultValue="World") String site,
-                                          @RequestParam(value="year1", defaultValue="World") String year1,
-                                          @RequestParam(value="month1", defaultValue="World") String month1,
-                                          @RequestParam(value="day1", defaultValue="World") String day1,
-                                          @RequestParam(value="year2", defaultValue="World") String year2,
-                                          @RequestParam(value="month2", defaultValue="World") String month2,
-                                          @RequestParam(value="day2", defaultValue="World") String day2) {
+    public DiscoveryItem calculateAverage(@RequestParam(value="site") String site,
+                                          @RequestParam(value="year1") String year1,
+                                          @RequestParam(value="month1") String month1,
+                                          @RequestParam(value="day1") String day1,
+                                          @RequestParam(value="year2") String year2,
+                                          @RequestParam(value="month2") String month2,
+                                          @RequestParam(value="day2") String day2) {
         LocalDateTime start = LocalDateTime.of(Integer.valueOf(year1), Integer.valueOf(month1), Integer.valueOf(day1), 0, 0);
         LocalDateTime end = LocalDateTime.of(Integer.valueOf(year2), Integer.valueOf(month2), Integer.valueOf(day2), 0, 0);
 
