@@ -53,7 +53,11 @@ public class AeronetDataLoader {
                 newDiscoveryItem.setFieldToValue(currentDiscoveryItemData);
 
                 for (Integer serializedItemIndex = 0; serializedItemIndex < serealizedItemValues.length; serializedItemIndex++) {
-                    newDiscoveryItem.setValueToField(headers[serializedItemIndex], serealizedItemValues[serializedItemIndex]);
+                    if (!serealizedItemValues[serializedItemIndex].equals(Utils.NULLABLE_VALUE)) {
+                        newDiscoveryItem.setValueToField(headers[serializedItemIndex], serealizedItemValues[serializedItemIndex]);
+                    } else {
+                        newDiscoveryItem.setValueToField(headers[serializedItemIndex], null);
+                    }
                 }
 
                 newDiscoveryItems.add(newDiscoveryItem);

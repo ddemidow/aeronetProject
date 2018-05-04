@@ -7,6 +7,11 @@ import java.util.ArrayList;
 public class Utils {
     public static final String MONGO_DB_NAME = "MongoDB";
     public static final String NO_BASE_NAME = "No base";
+    public static final String NULLABLE_VALUE = "-999.0";
+
+    public static enum DatabaseName {
+        MONGO_DB_NAME, NO_BASE_NAME
+    }
 
     public static enum MigrationStatus {
         Completed, Declined, InProgress_Downloading, InProgress_Inserting
