@@ -2,44 +2,60 @@ package com.example.callout.controllers;
 
 import com.example.Utils.Utils;
 import com.example.entities.Location;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 
 public class SalesforceController {
+    private String sessionId;
+
     public void uploadLocationsToSalesforce(ArrayList<Location> locations, String sessionId) {
+        if (sessionId == null) {
+            System.out.println("Please get session Id:");
+            Scanner scanner = new Scanner(System.in);
+
+            this.sessionId = scanner.next();
+        } else {
+            this.sessionId = sessionId;
+        }
+
+
         HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.set("Authorization", "Bearer " + sessionId);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + this.sessionId);
 
         RestTemplate template = new RestTemplate();
-        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 
-        template.exchange(Utils.ADD_LOCATION_ENDPOINT, HttpMethod.PUT, entity, String.class);
+        String putBodyJson = Utils.serializeObjectToJSON(new Utils.Wrapper(locations));
 
-        String result = template.getForObject(Utils.ADD_LOCATION_ENDPOINT, String.class);
+        System.out.println(putBodyJson);
+
+        HttpEntity<String> entity = new HttpEntity<String>(putBodyJson ,headers);
+
+        ResponseEntity<String> response = template.exchange(Utils.ADD_LOCATION_ENDPOINT, HttpMethod.PUT, entity, String.class);
+
+        System.out.println(response.getStatusCode());
     }
 
     public static void main(String[] args) {
-        final String uri = "https://login.salesforce.com";
+        SalesforceController sfController = new SalesforceController();
 
+        Location loc = new Location();
+        loc.setName("testSF_Finish_List");
+        loc.setLongitude(12.3);
+        loc.setLatitude(45.5);
+        loc.setElevation(34.5);
 
+        ArrayList<Location> locations = new ArrayList<Location>();
+        locations.add(loc);
+        locations.add(loc);
 
-
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-
-        RestTemplate template = new RestTemplate();
-        //templates
-        String result = restTemplate.getForObject(uri, String.class);
-
-        System.out.println(result);
+        sfController.uploadLocationsToSalesforce(locations, null);
     }
 
     private class Response {
@@ -69,6 +85,15 @@ public class SalesforceController {
 
         public void setMessage(String message) {
             this.message = message;
+        }
+
+        @Override
+        public String toString() {
+            return "Response{" +
+                    "statusCode=" + statusCode +
+                    ", isError=" + isError +
+                    ", message='" + message + '\'' +
+                    '}';
         }
     }
 }

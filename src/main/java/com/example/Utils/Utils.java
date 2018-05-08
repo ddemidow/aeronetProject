@@ -1,9 +1,13 @@
 package com.example.Utils;
 
 import com.example.entities.DiscoveryItem;
-import com.sforce.ws.ConnectorConfig;
+import com.example.entities.Location;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.ObjectMapper;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Utils {
     public static final String MONGO_DB_NAME = "MongoDB";
@@ -54,44 +58,74 @@ public class Utils {
         }
 
 
-        //System.out.println(averageDiscoveryItem);
+        System.out.println(averageDiscoveryItem);
 
         return averageDiscoveryItem;
     }
 
-    public static void main(String[] args) {
-        boolean success = false;
-        String username = "username";
-        String password = "password";
-        String authEndPoint = "https://login.salesforce.com/services/Soap/c/24.0/";
+    public static String serializeObjectToJSON(Object objectToSerializing) {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString = null;
 
         try {
-            ConnectorConfig config = new ConnectorConfig();
-            config.setUsername(username);
-            config.setPassword(password);
-
-            System.out.println("AuthEndPoint: " + authEndPoint);
-            config.setAuthEndpoint(authEndPoint);
-
-            EnterpriseConnection connection = new EnterpriseConnection(config);
-
-            // Print user and session info
-            GetUserInfoResult userInfo = connection.getUserInfo();
-            System.out.println("UserID: " + userInfo.getUserId());
-            System.out.println("User Full Name: " + userInfo.getUserFullName());
-            System.out.println("User Email: " + userInfo.getUserEmail());
-            System.out.println();
-            System.out.println("SessionID: " + config.getSessionId());
-            System.out.println("Auth End Point: " + config.getAuthEndpoint());
-            System.out
-                    .println("Service End Point: " + config.getServiceEndpoint());
-            System.out.println();
-
-            success = true;
-        } catch (ConnectionException ce) {
-            ce.printStackTrace();
+            jsonInString = mapper.writeValueAsString(objectToSerializing);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        return success;
+        return jsonInString;
+    }
+
+    public static void main(String[] args) {
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        //For testing
+        //User user = createDummyUser();
+        Location l = new Location();
+        l.setName("test");
+        l.setLatitude(12.4);
+        l.setLongitude(34.4);
+
+        try {
+            //Convert object to JSON string and save into file directly
+            //mapper.writeValue(new File("D:\\user.json"), user);
+
+            //Convert object to JSON string
+            //mapper.
+            ArrayList<Location> locations = new ArrayList<>();
+            locations.add(l);
+            String jsonInString = mapper.writeValueAsString(l);
+            System.out.println(jsonInString);
+
+            //Convert object to JSON string and pretty print
+            //jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(user);
+            //System.out.println(jsonInString);
+
+
+        } catch (JsonGenerationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static class Wrapper{
+        ArrayList<Location> locationRequest;
+
+        public Wrapper(ArrayList<Location> locationRequest) {
+            this.locationRequest = locationRequest;
+        }
+
+        public ArrayList<Location> getLocationRequest() {
+            return locationRequest;
+        }
+
+        public void setLocationRequest(ArrayList<Location> locationRequest) {
+            this.locationRequest = locationRequest;
+        }
     }
 }
