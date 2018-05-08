@@ -29,11 +29,13 @@ public class Utils {
 
     public static DiscoveryItem getAverageDiscoveryItem(ArrayList<DiscoveryItem> discoveryItems) {
         DiscoveryItem averageDiscoveryItem = discoveryItems.get(0);
+        DiscoveryItem maxDiscoveryItem = discoveryItems.get(0);
+        DiscoveryItem minDiscoveryItem = discoveryItems.get(0);
 
         for (Integer index = 1; index < discoveryItems.size(); index++) {
             DiscoveryItem currentDiscoveryItem = discoveryItems.get(index);
 
-            for (String currentFieldName : currentDiscoveryItem.getFieldToValue().keySet()) {
+            for (String currentFieldName : currentDiscoveryItem.getAllKeys()) {
                 if (currentFieldName.equals("AOD_1020nm")) {
                     System.out.println(currentDiscoveryItem.getValueFromField(currentFieldName));
                 }
@@ -42,11 +44,19 @@ public class Utils {
                         || currentDiscoveryItem.getValueFromField(currentFieldName) instanceof Integer) {
                     averageDiscoveryItem.setValueToField(currentFieldName, (Double)averageDiscoveryItem.getValueFromField(currentFieldName)
                             + (Double)currentDiscoveryItem.getValueFromField(currentFieldName));
+
+                    if ((Double)maxDiscoveryItem.getValueFromField(currentFieldName) < (Double)currentDiscoveryItem.getValueFromField(currentFieldName)) {
+                        maxDiscoveryItem.setValueToField(currentFieldName, currentDiscoveryItem.getValueFromField(currentFieldName));
+                    }
+
+                    if ((Double)minDiscoveryItem.getValueFromField(currentFieldName) > (Double)currentDiscoveryItem.getValueFromField(currentFieldName)) {
+                        minDiscoveryItem.setValueToField(currentFieldName, currentDiscoveryItem.getValueFromField(currentFieldName));
+                    }
                 }
             }
         }
 
-        for (String currentFieldName : averageDiscoveryItem.getFieldToValue().keySet()) {
+        for (String currentFieldName : averageDiscoveryItem.getAllKeys()) {
             if (currentFieldName.equals("AOD_1020nm")) {
                 System.out.println(averageDiscoveryItem.getValueFromField(currentFieldName));
             }
@@ -95,8 +105,9 @@ public class Utils {
             //mapper.
             ArrayList<Location> locations = new ArrayList<>();
             locations.add(l);
-            String jsonInString = mapper.writeValueAsString(l);
-            System.out.println(jsonInString);
+            String jsonInString = mapper.writeValueAsString(new DiscoveryItem());
+            mapper.createObjectNode().putObject(jsonInString);
+            System.out.println(mapper.createObjectNode());
 
             //Convert object to JSON string and pretty print
             //jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(user);
@@ -113,10 +124,10 @@ public class Utils {
 
     }
 
-    public static class Wrapper{
+    public static class LocationWrapper{
         ArrayList<Location> locationRequest;
 
-        public Wrapper(ArrayList<Location> locationRequest) {
+        public LocationWrapper(ArrayList<Location> locationRequest) {
             this.locationRequest = locationRequest;
         }
 

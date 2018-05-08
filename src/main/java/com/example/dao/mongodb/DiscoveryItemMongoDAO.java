@@ -131,8 +131,8 @@ public class DiscoveryItemMongoDAO implements DiscoveryItemDAO {
         BasicDBObject dbDiscoveryItem = new BasicDBObject();
         dbDiscoveryItem.append("_id", generateId(item));
 
-        for (String currentFieldName : item.getFieldToValue().keySet()) {
-            dbDiscoveryItem.append(currentFieldName, item.getFieldToValue().get(currentFieldName));
+        for (String currentFieldName : item.getAllKeys()) {
+            dbDiscoveryItem.append(currentFieldName, item.getAllKeys());
         }
 
         return dbDiscoveryItem;
@@ -146,7 +146,7 @@ public class DiscoveryItemMongoDAO implements DiscoveryItemDAO {
         DiscoveryItem discoveryItem = new DiscoveryItem();
 
         for (String currentFieldName : dbDiscoveryItem.keySet()) {
-            discoveryItem.getFieldToValue().put(currentFieldName, dbDiscoveryItem.get(currentFieldName));
+            discoveryItem.setValueToField(currentFieldName, dbDiscoveryItem.get(currentFieldName));
         }
 
         return discoveryItem;

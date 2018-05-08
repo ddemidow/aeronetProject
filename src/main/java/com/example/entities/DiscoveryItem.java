@@ -5,12 +5,17 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
 
 public class DiscoveryItem {
     private Map<String, Object> fieldToValue = new HashMap<String, Object>();
 
     public Map<String, Object> getFieldToValue() {
-        return fieldToValue;
+        return null;
+    }
+
+    public Set<String> getAllKeys() {
+        return fieldToValue.keySet();
     }
 
     public void setValueToField(String fieldName, Object value) {
@@ -31,17 +36,6 @@ public class DiscoveryItem {
 
     public LocalDate getDate() {
         return (LocalDate)fieldToValue.get("date");
-    }
-
-    @Override
-    public String toString() {
-        String result = "";
-
-        for (String currentStringName : fieldToValue.keySet()) {
-            result += currentStringName + " = " + getValueFromField(currentStringName) + ",\n";
-        }
-
-        return result;
     }
 
     public void setDate(Date date) {
@@ -966,5 +960,16 @@ public class DiscoveryItem {
 
     public void setExactWavelengthsOfAODEmpty6(Double exactWavelengthsOfAODEmpty6) {
         fieldToValue.put("exactWavelengthsOfAODEmpty6", exactWavelengthsOfAODEmpty6);
+    }
+
+    @Override
+    public String toString() {
+        String result = "";
+
+        for (String currentStringName : fieldToValue.keySet()) {
+            result += currentStringName + " = " + getValueFromField(currentStringName) + ",\n";
+        }
+
+        return result;
     }
 }

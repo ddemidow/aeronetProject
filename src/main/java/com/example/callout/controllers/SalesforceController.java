@@ -31,7 +31,7 @@ public class SalesforceController {
 
         RestTemplate template = new RestTemplate();
 
-        String putBodyJson = Utils.serializeObjectToJSON(new Utils.Wrapper(locations));
+        String putBodyJson = Utils.serializeObjectToJSON(new Utils.LocationWrapper(locations));
 
         System.out.println(putBodyJson);
 
