@@ -54,8 +54,12 @@ public class AeronetDataLoader {
 
                 for (Integer serializedItemIndex = 0; serializedItemIndex < serealizedItemValues.length; serializedItemIndex++) {
                     if (!serealizedItemValues[serializedItemIndex].equals(Utils.NULLABLE_VALUE)) {
+                        if (headers[serializedItemIndex].equals("Day_of_Year")) {
+                            System.out.println(serealizedItemValues[serializedItemIndex]);
+                        }
                         newDiscoveryItem.setValueToField(headers[serializedItemIndex], serealizedItemValues[serializedItemIndex]);
                     } else {
+                        //System.out.println(headers[serializedItemIndex] + " - NULL!!!");
                         newDiscoveryItem.setValueToField(headers[serializedItemIndex], null);
                     }
                 }
@@ -141,20 +145,20 @@ public class AeronetDataLoader {
     }
 
     public static void main(String[] args) {
-       /* AeronetRequestBuilder builder = new AeronetRequestBuilder();
-        String request = builder.setStartDate(LocalDateTime.now().minusYears(18)).setEndDate(LocalDateTime.now().minusYears(16)).setAVG(20).setSite("Cart_Site").setIfNoHtml(true).setAod(1).buildDiscoveryItemRequest();
+        AeronetRequestBuilder builder = new AeronetRequestBuilder();
+        String request = builder.setStartDate(LocalDateTime.now().minusYears(18)).setEndDate(LocalDateTime.now().minusYears(18).plusDays(7)).setAVG(20).setSite("Cart_Site").setIfNoHtml(true).setAod(1).buildDiscoveryItemRequest();
         System.out.println(request);
 
         //https://aeronet.gsfc.nasa.gov/cgi-bin/print_web_data_v3?&if_no_html=1&month2=APRIL&AVG=12&site=Cart_Site&hour2=16&month=APRIL&hour=16&year=2000&day2=20&day=20&year2=2001
        ArrayList<DiscoveryItem> items = new AeronetDataLoader().getDiscoveryItems(request);
 
-       System.out.println(items.size());*/
+       System.out.println(Utils.getAverageDiscoveryItem(items));
 
-       ArrayList<Location> locations = new AeronetDataLoader().getAllLocations(new AeronetRequestBuilder().buildLocationsRequest());
+      /* ArrayList<Location> locations = new AeronetDataLoader().getAllLocations(new AeronetRequestBuilder().buildLocationsRequest());
 
        System.out.println(locations.size());
 
-       new LocationMongoDAO().insertLocations(locations);
+       new LocationMongoDAO().insertLocations(locations);*/
       // Double.
         //Utils.getAverageDiscoveryItem(items);
 

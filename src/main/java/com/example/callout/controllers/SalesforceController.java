@@ -1,20 +1,51 @@
 package com.example.callout.controllers;
 
 import com.example.Utils.Utils;
+import com.example.callout.services.AeronetDataLoader;
+import com.example.callout.utils.AeronetRequestBuilder;
+import com.example.entities.DiscoveryItem;
 import com.example.entities.Location;
 import org.springframework.http.*;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
+import java.util.HashMap;
 
 public class SalesforceController {
-    private String sessionId;
+	private String sessionId;
 
-    public void uploadLocationsToSalesforce(ArrayList<Location> locations, String sessionId) {
+	public void uploadLocationsToSalesforce(ArrayList<Location> locations, String sessionId) {
+		if (sessionId == null) {
+			System.out.println("Please get session Id:");
+			Scanner scanner = new Scanner(System.in);
+
+			this.sessionId = scanner.next();
+		} else {
+			this.sessionId = sessionId;
+		}
+
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.set("Authorization", "Bearer " + this.sessionId);
+
+		RestTemplate template = new RestTemplate();
+
+		String putBodyJson = Utils.serializeObjectToJSON(new Utils.LocationWrapper(locations));
+
+		System.out.println(putBodyJson);
+
+		HttpEntity<String> entity = new HttpEntity<String>(putBodyJson ,headers);
+
+		ResponseEntity<String> response = template.exchange(Utils.ADD_LOCATION_ENDPOINT, HttpMethod.PUT, entity, String.class);
+
+		System.out.println(response.getStatusCode());
+	}
+
+	public void uploadCalculatedDiscoveryItemsByLocation (HashMap<Utils.CalculatedDiscoveryItemType, DiscoveryItem> calculatedItemsByType, String locationName,
+														  String sessionId) {
         if (sessionId == null) {
             System.out.println("Please get session Id:");
             Scanner scanner = new Scanner(System.in);
@@ -24,76 +55,87 @@ public class SalesforceController {
             this.sessionId = sessionId;
         }
 
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + this.sessionId);
 
         RestTemplate template = new RestTemplate();
 
-        String putBodyJson = Utils.serializeObjectToJSON(new Utils.LocationWrapper(locations));
+        ArrayList<Utils.DiscoveryItemWrapper> discoveryItemWrappers = new ArrayList<>();
+
+        for (Utils.CalculatedDiscoveryItemType currentCalculatedDiscoveryItemType : calculatedItemsByType.keySet()) {
+            discoveryItemWrappers.add(new Utils.DiscoveryItemWrapper(calculatedItemsByType.get(currentCalculatedDiscoveryItemType),
+                    currentCalculatedDiscoveryItemType, locationName));
+        }
+
+        String putBodyJson = Utils.serializeObjectToJSON(new Utils.DiscoveryItemsWrapperRequest(discoveryItemWrappers));
 
         System.out.println(putBodyJson);
 
         HttpEntity<String> entity = new HttpEntity<String>(putBodyJson ,headers);
 
-        ResponseEntity<String> response = template.exchange(Utils.ADD_LOCATION_ENDPOINT, HttpMethod.PUT, entity, String.class);
+        ResponseEntity<String> response = template.exchange(Utils.ADD_DISCOVERY_ITEM_ENDPOINT, HttpMethod.PUT, entity, String.class);
 
         System.out.println(response.getStatusCode());
-    }
+	}
 
-    public static void main(String[] args) {
-        SalesforceController sfController = new SalesforceController();
+	public static void main(String[] args) {
+		SalesforceController sfController = new SalesforceController();
 
-        Location loc = new Location();
-        loc.setName("testSF_Finish_List");
-        loc.setLongitude(12.3);
-        loc.setLatitude(45.5);
-        loc.setElevation(34.5);
 
-        ArrayList<Location> locations = new ArrayList<Location>();
-        locations.add(loc);
-        locations.add(loc);
 
-        sfController.uploadLocationsToSalesforce(locations, null);
-    }
 
-    private class Response {
-        private Integer statusCode;
-        private Boolean isError;
-        private String message;
+		AeronetDataLoader dataLoadingController = new AeronetDataLoader();
 
-        public Integer getStatusCode() {
-            return statusCode;
-        }
+		AeronetRequestBuilder builder = new AeronetRequestBuilder();
+		String request = builder.setStartDate(LocalDateTime.now().minusYears(18)).setEndDate(LocalDateTime.now().minusYears(18).plusDays(7)).setAVG(20).setSite("Cart_Site").setIfNoHtml(true).setAod(1).buildDiscoveryItemRequest();
+		System.out.println(request);
 
-        public void setStatusCode(Integer statusCode) {
-            this.statusCode = statusCode;
-        }
+		//https://aeronet.gsfc.nasa.gov/cgi-bin/print_web_data_v3?&if_no_html=1&month2=APRIL&AVG=12&site=Cart_Site&hour2=16&month=APRIL&hour=16&year=2000&day2=20&day=20&year2=2001
+		ArrayList<DiscoveryItem> items = new AeronetDataLoader().getDiscoveryItems(request);
 
-        public Boolean getError() {
-            return isError;
-        }
 
-        public void setError(Boolean error) {
-            isError = error;
-        }
 
-        public String getMessage() {
-            return message;
-        }
 
-        public void setMessage(String message) {
-            this.message = message;
-        }
+		sfController.uploadCalculatedDiscoveryItemsByLocation(Utils.getAverageDiscoveryItem(items), "Cart_Site", null);
+	}
 
-        @Override
-        public String toString() {
-            return "Response{" +
-                    "statusCode=" + statusCode +
-                    ", isError=" + isError +
-                    ", message='" + message + '\'' +
-                    '}';
-        }
-    }
+	private class Response {
+		private Integer statusCode;
+		private Boolean isError;
+		private String message;
+
+		public Integer getStatusCode() {
+			return statusCode;
+		}
+
+		public void setStatusCode(Integer statusCode) {
+			this.statusCode = statusCode;
+		}
+
+		public Boolean getError() {
+			return isError;
+		}
+
+		public void setError(Boolean error) {
+			isError = error;
+		}
+
+		public String getMessage() {
+			return message;
+		}
+
+		public void setMessage(String message) {
+			this.message = message;
+		}
+
+		@Override
+		public String toString() {
+			return "Response{" +
+					"statusCode=" + statusCode +
+					", isError=" + isError +
+					", message='" + message + '\'' +
+					'}';
+		}
+	}
 }

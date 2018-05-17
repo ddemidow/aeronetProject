@@ -2,16 +2,21 @@ package com.example.entities;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 public class DiscoveryItem {
     private Map<String, Object> fieldToValue = new HashMap<String, Object>();
 
+    public DiscoveryItem() {
+    }
+
+    public DiscoveryItem(Map<String, Object> fieldToValue) {
+        this.fieldToValue = new HashMap<>();
+        this.fieldToValue.putAll(fieldToValue);
+    }
+
     public Map<String, Object> getFieldToValue() {
-        return null;
+        return fieldToValue;
     }
 
     public Set<String> getAllKeys() {
@@ -20,7 +25,9 @@ public class DiscoveryItem {
 
     public void setValueToField(String fieldName, Object value) {
         try {
-            fieldToValue.put(fieldName, new Double(Double.parseDouble(value.toString())));
+            if (value != null) {
+                fieldToValue.put(fieldName, new Double(Double.parseDouble(value.toString())));
+            }
         } catch (NumberFormatException ex) {
             fieldToValue.put(fieldName, value);
         }

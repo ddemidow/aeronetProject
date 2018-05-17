@@ -187,11 +187,11 @@ public class AeronetDataLoadingController {
 
 		//System.out.println(Duration.between(LocalDate.now(), LocalDate.now()).toMinutes());
 
-		LocationMongoDAO locationDao = new LocationMongoDAO();
+		//LocationMongoDAO locationDao = new LocationMongoDAO();
 
-		Location test = locationDao.getLocationByName("Lille");
+		//Location test = locationDao.getLocationByName("Lille");
 
-		try {
+		/*try {
 			AeronetDataLoadingController controller = new AeronetDataLoadingController(Utils.MONGO_DB_NAME);
 
 			MigrationQueryItem item = controller.startProcessDiscoveryData(test, LocalDateTime.now().minusYears(18), LocalDateTime.now().minusYears(18).plusMonths(1));
@@ -202,6 +202,6 @@ public class AeronetDataLoadingController {
 		}
 
 		DiscoveryItemMongoDAO itemDao = new DiscoveryItemMongoDAO();
-		System.out.println(Utils.getAverageDiscoveryItem(itemDao.getAllItemsFromLocation(test.getName())));
+		System.out.println(Utils.getAverageDiscoveryItem(itemDao.getAllItemsFromLocation(test.getName())));*/
 	}
 }
