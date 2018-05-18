@@ -88,7 +88,7 @@ public class SalesforceController {
 		AeronetDataLoader dataLoadingController = new AeronetDataLoader();
 
 		AeronetRequestBuilder builder = new AeronetRequestBuilder();
-		String request = builder.setStartDate(LocalDateTime.now().minusYears(18)).setEndDate(LocalDateTime.now().minusYears(18).plusDays(7)).setAVG(20).setSite("Cart_Site").setIfNoHtml(true).setAod(1).buildDiscoveryItemRequest();
+		String request = builder.setStartDate(LocalDateTime.now().minusYears(13)).setEndDate(LocalDateTime.now().minusYears(12).plusDays(7)).setAVG(20).setSite("Minsk").setIfNoHtml(true).setAod(1).buildDiscoveryItemRequest();
 		System.out.println(request);
 
 		//https://aeronet.gsfc.nasa.gov/cgi-bin/print_web_data_v3?&if_no_html=1&month2=APRIL&AVG=12&site=Cart_Site&hour2=16&month=APRIL&hour=16&year=2000&day2=20&day=20&year2=2001
@@ -97,7 +97,7 @@ public class SalesforceController {
 
 
 
-		sfController.uploadCalculatedDiscoveryItemsByLocation(Utils.getAverageDiscoveryItem(items), "Cart_Site", null);
+		sfController.uploadCalculatedDiscoveryItemsByLocation(Utils.getAverageDiscoveryItem(items), "Minsk", null);
 	}
 
 	private class Response {
