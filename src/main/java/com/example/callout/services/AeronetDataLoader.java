@@ -150,9 +150,9 @@ public class AeronetDataLoader {
         System.out.println(request);
 
         //https://aeronet.gsfc.nasa.gov/cgi-bin/print_web_data_v3?&if_no_html=1&month2=APRIL&AVG=12&site=Cart_Site&hour2=16&month=APRIL&hour=16&year=2000&day2=20&day=20&year2=2001
-       ArrayList<DiscoveryItem> items = new AeronetDataLoader().getDiscoveryItems(request);
+       //ArrayList<DiscoveryItem> items = new AeronetDataLoader().getDiscoveryItems(request);
 
-       System.out.println(Utils.getAverageDiscoveryItem(items));
+       //System.out.println(Utils.getAverageDiscoveryItem(items));
 
       /* ArrayList<Location> locations = new AeronetDataLoader().getAllLocations(new AeronetRequestBuilder().buildLocationsRequest());
 

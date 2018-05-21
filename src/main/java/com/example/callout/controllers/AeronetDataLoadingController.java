@@ -38,6 +38,7 @@ public class AeronetDataLoadingController {
 		}
 	}
 
+
 	public MigrationQueryItem startProcessDiscoveryData(Location location, LocalDateTime start, LocalDateTime end) {
 		MigrationQueryItem queryItem = new MigrationQueryItem();
 
@@ -76,6 +77,58 @@ public class AeronetDataLoadingController {
 		} catch(Exception ex) {
 			queryItem.setStatus(Utils.MigrationStatus.Declined);
 			queryItem.setMessage(ex.getMessage() + ex.getCause() + ex.getLocalizedMessage());
+		}
+
+		return queryItem;
+	}
+
+	public MigrationQueryItem startProcessDiscoveryDataWithoutPeriod(Location location, LocalDateTime start) {
+		MigrationQueryItem queryItem = new MigrationQueryItem();
+
+		queryItem.setStartExecution(LocalDateTime.now());
+		queryItem.setStatus(Utils.MigrationStatus.InProgress_Downloading);
+		queryItem.setLocationName(location.getName());
+
+
+		if (start == null) {
+			start = LocalDateTime.of(1990, 1, 1, 0, 0);
+		}
+
+		LocalDateTime end = LocalDateTime.now();
+
+		queryItem.setStart(start);
+		queryItem.setEnd(end);
+
+		String url = aeronetRequestBuilder.setSite(location.getName()).setStartDate(start).setEndDate(end).setAVG(20).setAod(1).setIfNoHtml(true).buildDiscoveryItemRequest();
+
+		System.out.println(url);
+
+		try{
+			System.out.println("start downloading...");
+
+			ArrayList<DiscoveryItem> discoveryItemsFromLocation =  aeronetDataLoader.getDiscoveryItems(url);
+
+			queryItem.setSize(discoveryItemsFromLocation.size());
+			queryItem.setStatus(Utils.MigrationStatus.InProgress_Inserting);
+
+			System.out.println("start insering...");
+
+			if (databaseType.equals(Utils.MONGO_DB_NAME)) {
+				Boolean result = discoveryItemDaoService.insertItems(discoveryItemsFromLocation, location.getName());
+
+				if (result) {
+					queryItem.setStatus(Utils.MigrationStatus.Completed);
+					System.out.println("here");
+
+					queryItem.setDuration(Duration.between(queryItem.getStartExecution(), LocalDateTime.now()).getSeconds());
+
+					System.out.println("here1");
+				}
+			}
+		} catch(Exception ex) {
+			queryItem.setStatus(Utils.MigrationStatus.Declined);
+			queryItem.setMessage(ex.getMessage() + ex.getCause() + ex.getLocalizedMessage());
+			startProcessDiscoveryDataWithoutPeriod(location, start.minusYears(-1));
 		}
 
 		return queryItem;
