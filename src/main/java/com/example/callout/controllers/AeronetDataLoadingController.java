@@ -111,9 +111,9 @@ public class AeronetDataLoadingController {
 			queryItem.setSize(discoveryItemsFromLocation.size());
 			queryItem.setStatus(Utils.MigrationStatus.InProgress_Inserting);
 
-			System.out.println("start insering...");
+			System.out.println("start inserting...");
 
-			if (databaseType.equals(Utils.MONGO_DB_NAME)) {
+			if (databaseType != null && databaseType.equals(Utils.MONGO_DB_NAME)) {
 				Boolean result = discoveryItemDaoService.insertItems(discoveryItemsFromLocation, location.getName());
 
 				if (result) {
@@ -242,19 +242,20 @@ public class AeronetDataLoadingController {
 
 		//LocationMongoDAO locationDao = new LocationMongoDAO();
 
-		//Location test = locationDao.getLocationByName("Lille");
+		Location test = new Location();
+		test.setName("Minsk");
 
-		/*try {
+		try {
 			AeronetDataLoadingController controller = new AeronetDataLoadingController(Utils.MONGO_DB_NAME);
 
-			MigrationQueryItem item = controller.startProcessDiscoveryData(test, LocalDateTime.now().minusYears(18), LocalDateTime.now().minusYears(18).plusMonths(1));
+			MigrationQueryItem item = controller.startProcessDiscoveryDataWithoutPeriod(test, null);
 
 			System.out.println(item);
 		} catch (DatabaseNotSupportException e) {
 			e.printStackTrace();
 		}
 
-		DiscoveryItemMongoDAO itemDao = new DiscoveryItemMongoDAO();
-		System.out.println(Utils.getAverageDiscoveryItem(itemDao.getAllItemsFromLocation(test.getName())));*/
+		//DiscoveryItemMongoDAO itemDao = new DiscoveryItemMongoDAO();
+		//System.out.println(Utils.getAverageDiscoveryItem(itemDao.getAllItemsFromLocation(test.getName())));
 	}
 }

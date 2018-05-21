@@ -54,7 +54,7 @@ public class AeronetDataLoader {
 
                 for (Integer serializedItemIndex = 0; serializedItemIndex < serealizedItemValues.length; serializedItemIndex++) {
                     if (!serealizedItemValues[serializedItemIndex].equals(Utils.NULLABLE_VALUE)) {
-                        if (headers[serializedItemIndex].equals("Day_of_Year")) {
+                        if (headers[serializedItemIndex].equals("Day_of_Year") && Integer.valueOf(headers[serializedItemIndex]) == 200) {
                             System.out.println(serealizedItemValues[serializedItemIndex]);
                         }
                         newDiscoveryItem.setValueToField(headers[serializedItemIndex], serealizedItemValues[serializedItemIndex]);
